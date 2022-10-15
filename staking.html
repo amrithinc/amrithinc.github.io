@@ -232,7 +232,7 @@
                             <div class="input-box my-4">
                                 <div class="input-area d-flex flex-column flex-md-row mb-3">
                                     <div class="input-text">
-                                        <input id="stake_input" type="text" placeholder="0.00">
+                                        <input id="stake_input" type="number" placeholder="NUNA Stake Amount">
                                     </div>
                                     <button onclick="create_staking_tx()" class="btn input-btn mt-2 mt-md-0 ml-md-3">stake</button>
                                 </div>
@@ -375,11 +375,12 @@
     <script src="assets/js/vendor/countdown.min.js"></script>
     <script src="assets/js/vendor/shuffle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js" integrity="sha512-0qU9M9jfqPw6FKkPafM3gy2CBAvUWnYVOfNPDYKVuRTel1PrciTj+a9P3loJB+j0QmN2Y0JYQmkBBS8W+mbezg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-sdk/10.4.0/stellar-sdk.min.js" integrity="sha512-g0SxqTuQm5hTkD9sk4DMT3tfrZV5QM+pbChv9vhQHIG+6H1hZXEI7Gz017ciPb3gIznqXv83zOBmBa1+l9fXcw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Active js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-freighter-api/1.1.2/index.min.js"></script>
-<script src="https://unpkg.com/@albedo-link/intent/lib/albedo.intent.js"></script>
+    <script src="https://unpkg.com/@albedo-link/intent/lib/albedo.intent.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-sdk/10.4.0/stellar-sdk.min.js" integrity="sha512-g0SxqTuQm5hTkD9sk4DMT3tfrZV5QM+pbChv9vhQHIG+6H1hZXEI7Gz017ciPb3gIznqXv83zOBmBa1+l9fXcw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script>
         
         const config = {
@@ -507,11 +508,6 @@
         }
 
         async function create_staking_tx(){
-            if (pubkey === ""){document.getElementById('error').innerHTML = "Please login!" }
-            else{
-                console.log(pubkey)
-                console.log(wallet)
-                console.log(document.getElementById('stake_input').value)
             let signed_tx = ""
             amt = document.getElementById('stake_input').value
             if(wallet === "" || pubkey === ""){
@@ -589,13 +585,12 @@
 
                 }
         
-                document.getElementById('error').innerHTML = "Submitting stake transaction..." 
             await server.submitTransaction(new StellarSdk.TransactionBuilder.fromXDR(signed_tx,pass))
             document.getElementById('error').innerHTML = "Successfully staked " + amt + " NUNA"
             get_my_staked()
             get_staking_transactions()
-            }
         }
+        
         
         // Evaluating a valid staking transaction;
         //  - Must have 2 claimants
