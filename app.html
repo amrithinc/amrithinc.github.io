@@ -280,7 +280,7 @@ function build_donation_list(){
                 amount: transaction_config.fee_amount.toFixed(7),
             }))        
         }
-        tx_xdr = transaction.addMemo('GlobalChange' + transaction_config.total_gc).setTimeout(200).build().toXDR()
+        tx_xdr = transaction.setTimeout(200).addMemo(StellarSdk.Memo.text('GlobalChange ' + totalGC)).build().toXDR()
         console.log(tx_xdr)
         net = ""
         if (config.testnet){
