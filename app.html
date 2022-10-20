@@ -88,6 +88,9 @@
         }
     }
     async function startup(){
+    $( "#fee_box" ).prop( "checked", false );
+    $( "#fee_input" ).val("")
+    $( "#raw_gc" ).val("")
     await get_cpi_price()
     await get_xlm_price()
     $("#body").show()
@@ -242,7 +245,7 @@ function build_donation_list(){
             console.log(JSON.stringify(transaction_config))
             const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
             const account = await server.loadAccount(pub_key);
-            const fee = await server.fetchBaseFee();
+            const fee = await server.fetchBaseFee()*100;
             const transaction = new StellarSdk.TransactionBuilder(
                 account,
                 {
@@ -257,7 +260,7 @@ function build_donation_list(){
                 amount: transaction_config.per_xlm,
             }))
         })
-        tx_xdr = transaction.setTimeout(30).build().toXDR()
+        tx_xdr = transaction.setTimeout(200).build().toXDR()
         console.log(tx_xdr)
         net = ""
         if (config.testnet){
