@@ -13,6 +13,7 @@
         pub_key = ""
         config = {
             testnet : true,
+            fee_address : "GCN3SYNWK3LQ5RUZP23XIOU6YADSZIOFKRYLGJO3RFDUACIPAMDHTVVQ"
         }
         donation_list = [
         {
@@ -187,7 +188,7 @@ function build_donation_list(){
                                    
                 checkboxes.change(function(){
                     var current = checkboxes.filter(':checked').length;
-                    checkboxes.filter(':not(:checked)').prop('disabled', current > max);
+                    checkboxes.filter(':not(:checked)').prop('disabled', current > max );
                 });
             });
     $("#raw_gc").on("input", function(){
@@ -268,9 +269,9 @@ function build_donation_list(){
                 amount: transaction_config.per_xlm,
             }))
         })
-        if(transaction_config.fee && transaction_config.fee_amount > 0){
+        if(transaction_config.fee && transaction_config.fee_amount > 0 && !isNaN(fee_amount)){
             transaction.addOperation(StellarSdk.Operation.payment({
-                destination: address,
+                destination: config.fee_address,
                 asset: StellarSdk.Asset.native(),
                 amount: transaction_config.fee,
             }))        
