@@ -54,7 +54,7 @@
             await axios.get('https://horizon.stellar.org/paths/strict-send?source_asset_type=native&source_amount=10&destination_assets=USDC:GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN').then(
                 function(response){
                     xlm_price = parseFloat(response.data._embedded.records[0].destination_amount)/10
-                    document.getElementById('xlm_price').innerHTML = "$" + Math.round((xlm_price) * 1000) / 10000 + " per XLM"
+                    document.getElementById('xlm_price').innerHTML = "$" + Math.round((xlm_price) * 10000) / 10000 + " per XLM"
                 }
             )
         }
@@ -235,7 +235,7 @@ function build_donation_list(){
         if(recipients.length == 5){
             if (pub_key!=""){
             transaction_config = {
-                fee : $('#fee_box').is(":checked"),
+                is_fee : $('#fee_box').is(":checked"),
                 fee_amount : calc_fee(),
                 recipients : recipients,
                 total_xlm : total_xlm,
@@ -269,11 +269,15 @@ function build_donation_list(){
                 amount: transaction_config.per_xlm,
             }))
         })
-        if(transaction_config.fee && transaction_config.fee_amount > 0 && !isNaN(fee_amount)){
+        console.log('---------------')
+        console.log(transaction_config.fee_amount)
+        console.log('---------------')
+
+        if(transaction_config.is_fee && transaction_config.fee_amount > 0 && !isNaN(transaction_config.fee_amount)){
             transaction.addOperation(StellarSdk.Operation.payment({
                 destination: config.fee_address,
                 asset: StellarSdk.Asset.native(),
-                amount: transaction_config.fee,
+                amount: transaction_config.fee_amount.toFixed(7),
             }))        
         }
         tx_xdr = transaction.setTimeout(200).build().toXDR()
