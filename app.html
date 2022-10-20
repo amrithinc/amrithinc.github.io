@@ -243,7 +243,15 @@ function build_donation_list(){
     
             }
             console.log(JSON.stringify(transaction_config))
-            const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
+            if (config.testnet){
+                config.horizon = "https://horizon-testnet.stellar.org";
+                pass = "Test SDF Network ; September 2015"
+            }
+            else{
+                config.horizon = "https://horizon.stellar.org"
+                pass = "Public Global Stellar Network ; September 2015"
+            }
+            const server = new StellarSdk.Server(config.horizon);
             const account = await server.loadAccount(pub_key);
             const fee = await server.fetchBaseFee()*100;
             const transaction = new StellarSdk.TransactionBuilder(
@@ -267,8 +275,13 @@ function build_donation_list(){
             net = "TESTNET"
         }
         else {net="PUBLIC"}
+        document.getElementById('error_submit').innerHTML = "awaiting signed transaction..."
         signed_tx = await window.freighterApi.signTransaction(tx_xdr,net,pub_key)
         console.log(signed_tx)
+        document.getElementById('error_submit').innerHTML = "submitting signed transaction..."
+        
+        await server.submitTransaction(new StellarSdk.TransactionBuilder.fromXDR(signed_tx,pass))
+        document.getElementById('error_submit').innerHTML = "Successfully sent your GlobalChange Ore Transaction!"
 
         }
         else{document.getElementById('error').innerHTML="please login!"}
