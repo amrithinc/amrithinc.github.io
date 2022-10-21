@@ -9,8 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-sdk/10.4.0/stellar-sdk.min.js" integrity="sha512-g0SxqTuQm5hTkD9sk4DMT3tfrZV5QM+pbChv9vhQHIG+6H1hZXEI7Gz017ciPb3gIznqXv83zOBmBa1+l9fXcw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        pub_key = ""
+    <script>pub_key = ""
         config = {
             testnet : true,
             fee_address : "GCN3SYNWK3LQ5RUZP23XIOU6YADSZIOFKRYLGJO3RFDUACIPAMDHTVVQ"
@@ -45,7 +44,7 @@
         current_denomination = [0,0,0,0,0,0,0,0,0,0]
         denominations = [5000,2000,1000,500,100,50,25,10,5,1]
         amount_denominations =  [0,0,0,0,0,0,0,0,0,0]
-
+        
         cpi_price = 0
         xlm_price = 0
         let total_xlm = 0
@@ -68,11 +67,11 @@
                 } catch (e) {
                     error = e;
                 }
-
+        
                 if (error) {
                     // document.getElementById('wallet_stat').innerHTML = "Error when trying to connect to Freighter."
                 }
-
+        
                             }
         }
         async function get_cpi_price(){
@@ -87,29 +86,29 @@
                 }
             )
         }
-    }
-    async function startup(){
-    $( "#fee_box" ).prop( "checked", false );
-    $( "#fee_input" ).val("")
-    $( "#raw_gc" ).val("")
-    await get_cpi_price()
-    await get_xlm_price()
-    $("#body").show()
-    }
-function get_denom(){
-    raw_gc = Math.round(parseFloat(document.getElementById("raw_gc").value)*100)
-    if(isNaN(raw_gc)){
+        }
+        async function startup(){
+        $( "#fee_box" ).prop( "checked", false );
+        $( "#fee_input" ).val("")
+        $( "#raw_gc" ).val("")
+        await get_cpi_price()
+        await get_xlm_price()
+        $("#body").show()
+        }
+        function get_denom(){
+        raw_gc = Math.round(parseFloat(document.getElementById("raw_gc").value)*100)
+        if(isNaN(raw_gc)){
         for(i = 0; i < denominations.length; i++){
             document.getElementById('gc_' + denominations[i]).innerHTML = 0
             document.getElementById('calc_xlm').innerHTML = 0
-    
+        
         }
-    }
-    else{
-    document.getElementById('error').innerHTML = "Everything looks good!"
-    total_xlm = Math.round((raw_gc/300)*(cpi_price/xlm_price)*10000)/1000000
-    document.getElementById('calc_xlm').innerHTML = total_xlm + " XLM"
-    for(i = 0; i < denominations.length; i++){
+        }
+        else{
+        document.getElementById('error').innerHTML = "Everything looks good!"
+        total_xlm = Math.round((raw_gc/300)*(cpi_price/xlm_price)*10000)/1000000
+        document.getElementById('calc_xlm').innerHTML = total_xlm + " XLM"
+        for(i = 0; i < denominations.length; i++){
         x = Math.floor(raw_gc / denominations[i])
         if (x!=0){
             amount_denominations[i] = x
@@ -120,18 +119,18 @@ function get_denom(){
             document.getElementById('gc_' + denominations[i]).innerHTML = " " + 0 + " "
             }
         }
-    }
-    current_denomination = amount_denominations
-}
-function eval_denom(){
-    total = 0
-    for(i = 0; i<denominations.length;i++){
+        }
+        current_denomination = amount_denominations
+        }
+        function eval_denom(){
+        total = 0
+        for(i = 0; i<denominations.length;i++){
         total += (denominations[i]*current_denomination[i])
-    }
-    return (total/100)
-}
-function subtract(denomination){
-    for(i = 0; i<current_denomination.length;i++){
+        }
+        return (total/100)
+        }
+        function subtract(denomination){
+        for(i = 0; i<current_denomination.length;i++){
         if(denominations[i] == denomination){{
             if(current_denomination[i]>0){
                 current_denomination[i] -= 1
@@ -146,12 +145,12 @@ function subtract(denomination){
         }
             
         }
-    }
-
-
-}
-function add(denomination){
-    for(i = 0; i<current_denomination.length;i++){
+        }
+        
+        
+        }
+        function add(denomination){
+        for(i = 0; i<current_denomination.length;i++){
         if(denominations[i] == denomination){{
                 current_denomination[i] += 1
                 document.getElementById('gc_' + denominations[i]).innerHTML = " " + current_denomination[i] + " "
@@ -163,21 +162,21 @@ function add(denomination){
                 
             }
         }
-    }
-    
-}
-
-
-function build_donation_list(){
-    donation_list.forEach(element => {
+        }
+        
+        }
+        
+        
+        function build_donation_list(){
+        donation_list.forEach(element => {
         document.getElementById('donation_table').innerHTML += `
                 <tr>
                     <tr><td >${element.name}</td><td ><input id="${element.name}" type=checkbox name=ckb value=${element.address}></td></tr>
                 </tr>`
-    })
-}
-
-
+        })
+        }
+        
+        
         $(document).ready(function(){
             $("#fee_input").on("input", function(){
             calc_fee()
@@ -188,17 +187,17 @@ function build_donation_list(){
                                    
                 checkboxes.change(function(){
                     var current = checkboxes.filter(':checked').length;
-                    checkboxes.filter(':not(:checked)').prop('disabled', current > max );
+                    checkboxes.filter(':not(:checked)').prop('disabled', current >= max );
                 });
             });
-    $("#raw_gc").on("input", function(){
+        $("#raw_gc").on("input", function(){
         get_denom()
         calc_fee()
         console.log(total_xlm)
-    });
-});
-
-    function expose_fee(){
+        });
+        });
+        
+        function expose_fee(){
         if($('#fee_box').is(":checked")){
             $("#fee_toggle").show()
         }
@@ -207,19 +206,19 @@ function build_donation_list(){
             calc_fee()
             $("#fee_toggle").hide()
         }
-
-    }
-
-    function calc_fee(){
+        
+        }
+        
+        function calc_fee(){
         fee_percent = (parseFloat($("#fee_input").val()))
         fee = ((fee_percent*0.01)*total_xlm*1000000)/1000000
         document.getElementById('calc_fee').innerHTML = fee + " XLM"
         console.log("fee %: " + fee_percent)
         console.log("total XLM: " + total_xlm)
         if(isNaN(fee)){return 0}
-        else{return (fee*100000)/100000}
-    }
-    async function ore_tx(){
+        else{return (fee.toFixed(7))}
+        }
+        async function ore_tx(){
         recipients = []
         console.log('total_xlm : ' +total_xlm)
         console.log('fee : ' + calc_fee())
@@ -235,13 +234,12 @@ function build_donation_list(){
         if(recipients.length == 5){
             if (pub_key!=""){
             transaction_config = {
-                is_fee : $('#fee_box').is(":checked"),
                 fee_amount : calc_fee(),
                 recipients : recipients,
                 total_xlm : total_xlm,
                 per_xlm :( total_xlm / 5).toFixed(7),
-                total_gc :  Math.round(parseFloat(document.getElementById("raw_gc").value))
-    
+                total_gc : document.getElementById("raw_gc").value
+        
             }
             console.log(JSON.stringify(transaction_config))
             if (config.testnet){
@@ -272,12 +270,12 @@ function build_donation_list(){
         console.log('---------------')
         console.log(transaction_config.fee_amount)
         console.log('---------------')
-
-        if(transaction_config.is_fee && transaction_config.fee_amount > 0 && !isNaN(transaction_config.fee_amount)){
+        
+        if(transaction_config.fee_amount > 0 && !isNaN(transaction_config.fee_amount)){
             transaction.addOperation(StellarSdk.Operation.payment({
                 destination: config.fee_address,
                 asset: StellarSdk.Asset.native(),
-                amount: transaction_config.fee_amount.toFixed(7),
+                amount: transaction_config.fee_amount
             }))        
         }
         tx_xdr = transaction.setTimeout(200).addMemo(StellarSdk.Memo.text('GlobalChange ' + transaction_config.total_gc)).build().toXDR()
@@ -294,17 +292,16 @@ function build_donation_list(){
         
         await server.submitTransaction(new StellarSdk.TransactionBuilder.fromXDR(signed_tx,pass))
         document.getElementById('error_submit').innerHTML = "Successfully sent your GlobalChange Ore Transaction!"
-
+        
         }
         else{document.getElementById('error').innerHTML="please login!"}
-    }
+        }
         else{
             document.getElementById('error').innerHTML = "Please select 5 nonprofits."
         }
-    }
-   
-    
-        </script>
+        }
+        
+         </script>
 
 </head>
 <body>
@@ -345,12 +342,9 @@ function build_donation_list(){
 
         </tbody>
     </table>
-    <p id="fee">
-        Add a % fee? (fees go to the wallet provider.)
-        <input id="fee_box" type="checkbox" onchange="expose_fee()">
-        <p hidden id="fee_toggle">
-            <input type="number" step="1" placeholder="Enter a fee percent" id="fee_input">
-        </p>
+        Add a % fee? (fees go to the wallet provider.)<br><br>
+        <input type="number" step="1" placeholder="Enter a fee percent" id="fee_input">
+
     </p>
     donation in XLM: <b id="calc_xlm">...</b><br>
     fee cost in XLM: <b id="calc_fee">...</b><br>
