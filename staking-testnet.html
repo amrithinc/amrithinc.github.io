@@ -387,7 +387,6 @@
             asset_issuer : "GARSR6GI5FBNDUPK7JTW2T3HAZYGEU4CNHK45564T2LKPWC5CFKPPYCP",
             testnet : true,
             contract_address : "GCW7AGZBQK2CSJWMQRZ3HWIF3MV222DWTMOQNX3M3XBG5CID25HT6VG3",
-            rewards_address : "GDSBTSOOTZJOTYOL2MHDLTEIMS4LNV7267DXMGJNJQVNQMDH3U5QTTTN",
             daily_reward_amount : 1,
             price_url : "https://horizon.stellar.org/paths/strict-send?source_asset_code=NUNA&source_asset_issuer=GCX2ENOVSSOOH6G4HIOBMPCBFXHDVDGA546NK3ZFX3NP3QS25BKZBWOW&source_asset_type=credit_alphanum12&source_amount=1000&destination_assets=USDC:GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN&limit=1",
             lock_time_seconds : 120,
@@ -585,7 +584,7 @@
                 }
             if (signed_tx.length > 0){
                 console.log(signed_tx)
-            //await server.submitTransaction(new StellarSdk.TransactionBuilder.fromXDR(signed_tx,pass))
+            await server.submitTransaction(new StellarSdk.TransactionBuilder.fromXDR(signed_tx,pass))
             document.getElementById('error').innerHTML = "Successfully staked " + amt + " NUNA"
             get_my_staked()
             get_staking_transactions()
@@ -696,7 +695,7 @@
                 if (signed_tx.length > 0){
 
                 document.getElementById('error').innerHTML = "Submitting unstake transaction..." 
-                //await server.submitTransaction(new StellarSdk.TransactionBuilder.fromXDR(signed_tx,pass))
+            await server.submitTransaction(new StellarSdk.TransactionBuilder.fromXDR(signed_tx,pass))
             document.getElementById('error').innerHTML = "Successfully unstaked " + unstaking + " NUNA!"
             get_my_staked()
             get_staking_transactions()
