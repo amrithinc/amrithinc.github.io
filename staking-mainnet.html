@@ -13,12 +13,12 @@
     <title>NUNA PROJECT ART - $NUNA Token is a token for art. NUNA TOKEN, STELLAR NETWORK, ART, NFT, APP, WEB3.</title>
 
     <!-- Favicon  -->
-    <link rel="icon" href="assets/img/favicon.ico">
+    <link rel="icon" href="static/assets/img/favicon.ico">
 
     <!-- ***** All CSS Files ***** -->
 
     <!-- Style css -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="static/assets/css/style.css">
 
 </head>
 
@@ -64,7 +64,7 @@
 
                     <!-- Logo -->
                     <a class="navbar-brand" href="index.html">
-                        <img src="assets/img/logo/logo.png" alt="Brand Logo" />
+                        <img src="static/assets/img/logo/logo.png" alt="Brand Logo" />
                     </a>
 
                     <div class="ml-auto"></div>
@@ -244,6 +244,7 @@
                             </div>
                             <span id="error">Stake your NUNA tokens to earn more.</span>
                             <span class="mt-3"><strong>*APY is dynamic.</strong></span>
+                            <pre id="horizon_error"></pre>
                         </div>
                     </div>
                     <div class="col-12 col-md-5">
@@ -273,6 +274,7 @@
                 </div>
             </div>
         </section>
+        
         <!-- ***** Staking Area End ***** -->
 
        
@@ -288,7 +290,7 @@
                         <div class="footer-items">
                             <!-- Logo -->
                             <a class="navbar-brand" href="index.html">
-                                <img src="assets/img/logo/logo.png" alt="">
+                                <img src="static/assets/img/logo/logo.png" alt="">
                             </a>
                             <!-- Social Icons -->
                             <div class="social-icons d-flex justify-content-center my-4">
@@ -361,23 +363,23 @@
     <!-- ***** All jQuery Plugins ***** -->
 
     <!-- jQuery(necessary for all JavaScript plugins) -->
-    <script src="assets/js/vendor/jquery.min.js"></script>
+    <script src="static/assets/js/vendor/jquery.min.js"></script>
 
     <!-- Bootstrap js -->
-    <script src="assets/js/vendor/popper.min.js"></script>
-    <script src="assets/js/vendor/bootstrap.min.js"></script>
+    <script src="static/assets/js/vendor/popper.min.js"></script>
+    <script src="static/assets/js/vendor/bootstrap.min.js"></script>
 
     <!-- Plugins js -->
-    <script src="assets/js/vendor/all.min.js"></script>
-    <script src="assets/js/vendor/gallery.min.js"></script>
-    <script src="assets/js/vendor/slider.min.js"></script>
-    <script src="assets/js/vendor/countdown.min.js"></script>
-    <script src="assets/js/vendor/shuffle.min.js"></script>
+    <script src="static/assets/js/vendor/all.min.js"></script>
+    <script src="static/assets/js/vendor/gallery.min.js"></script>
+    <script src="static/assets/js/vendor/slider.min.js"></script>
+    <script src="static/assets/js/vendor/countdown.min.js"></script>
+    <script src="static/assets/js/vendor/shuffle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js" integrity="sha512-0qU9M9jfqPw6FKkPafM3gy2CBAvUWnYVOfNPDYKVuRTel1PrciTj+a9P3loJB+j0QmN2Y0JYQmkBBS8W+mbezg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Active js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-freighter-api/1.1.2/index.min.js"></script>
     <script src="https://unpkg.com/@albedo-link/intent/lib/albedo.intent.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="static/assets/js/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-sdk/10.4.0/stellar-sdk.min.js" integrity="sha512-g0SxqTuQm5hTkD9sk4DMT3tfrZV5QM+pbChv9vhQHIG+6H1hZXEI7Gz017ciPb3gIznqXv83zOBmBa1+l9fXcw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
@@ -471,7 +473,7 @@
             if (window.freighterApi.isConnected()) {
                 pubkey = await window.freighterApi.getPublicKey()
                 wallet = "freighter"
-                document.getElementById('error').innerHTML = "logged in with address: " + pubkey.slice(0,5) + "..." + pubkey.slice(50,55) + " with " + wallet
+                document.getElementById('error').innerHTML = "logged in with address: " + pubkey.slice(0,5) + "..." + pubkey.slice(50,56) + " with " + wallet
                 get_my_staked(pubkey)
             }
     
@@ -485,7 +487,7 @@
         
             })
             if(pubkey != ""){
-                document.getElementById('error').innerHTML = "logged in with address: " + pubkey.slice(0,5) + "..." + pubkey.slice(50,55) + " with " + wallet
+                document.getElementById('error').innerHTML = "logged in with address: " + pubkey.slice(0,5) + "..." + pubkey.slice(50,56) + " with " + wallet
                 get_my_staked(pubkey)
         
             }
@@ -497,7 +499,7 @@
                 .then(result => {
                     pubkey = result.publicKey
                     wallet = "rabet"
-                    document.getElementById('error').innerHTML = "logged in with address: " + pubkey.slice(0,5) + "..." + pubkey.slice(50,55) + " with " + wallet
+                    document.getElementById('error').innerHTML = "logged in with address: " + pubkey.slice(0,5) + "..." + pubkey.slice(50,56) + " with " + wallet
                     get_my_staked(pubkey)
 
                 })
@@ -506,6 +508,7 @@
         }
 
         async function create_staking_tx(){
+            document.getElementById('horizon_error').innerHTML = ""
             let signed_tx = ""
             amt = document.getElementById('stake_input').value
             if(wallet === "" || pubkey === ""){
@@ -515,9 +518,8 @@
                     if(document.getElementById('error').innerHTML != ""){document.getElementById('error').innerHTML = ""}
                     else if(document.getElementById('stake_input').value == ""){document.getElementById('error').innerHTML = "Staked amount input was left blank"}
                     else{
-                        document.getElementById('error').innerHTML = "building staking transaction..."
                         const account = await server.loadAccount(pubkey)
-                        const fee = 5000
+                        const fee = 500000
                         const transaction = new StellarSdk.TransactionBuilder(account, {
                              fee : fee,
                              networkPassphrase : pass
@@ -544,7 +546,7 @@
                             if(config.testnet){
                                 x = "testnet"
                             }
-                            else{x="mainnet"}
+                            else{x="public"}
                             await albedo.tx({
                                 xdr: xdr,
                                 network: x
@@ -584,10 +586,17 @@
                 }
             if (signed_tx.length > 0){
                 console.log(signed_tx)
-            await server.submitTransaction(new StellarSdk.TransactionBuilder.fromXDR(signed_tx,pass))
+            try{
+                document.getElementById('error').innerHTML = "Submitting to horizon..."
+                await server.submitTransaction(new StellarSdk.TransactionBuilder.fromXDR(signed_tx,pass))
             document.getElementById('error').innerHTML = "Successfully staked " + amt + " NUNA"
             get_my_staked()
             get_staking_transactions()
+        }
+            catch(e){
+                console.log(e.response.data)
+                document.getElementById('horizon_error').innerHTML =JSON.stringify(e.response.data.extras.result_codes,undefined,2)
+            }
         }
     }
         
@@ -618,6 +627,7 @@
         }
         
         async function unstake(){
+            document.getElementById('horizon_error').innerHTML = ""
             if (pubkey === ""){document.getElementById('error').innerHTML = "Please login!" }
             else{
             claims = []
@@ -630,19 +640,17 @@
                 .limit(100)
                 .call()
             now = new Date()
-            document.getElementById('error').innerHTML = "Preparing unstake transaction..." 
             resp.records.forEach(element => {
                     if(resolve_claimants(element) && resolve_pending(element,now)){
                         claims.push(element.id)
                         unstaking += parseFloat(element.amount)
             }   
-            else{
-            }
-            
             })
+            console.log(claims.length)
+
             if(claims.length > 0){
                 const account = await server.loadAccount(pubkey)
-                const fee = 5000
+                const fee = 500000
                 let signed_tx = ""
                 const transaction = new StellarSdk.TransactionBuilder(account, {
                      fee : fee,
@@ -659,7 +667,7 @@
                     if(config.testnet){
                         x = "testnet"
                     }
-                    else{x="mainnet"}
+                    else{x="public"}
                     await albedo.tx({
                         xdr: xdr,
                         network: x
@@ -693,21 +701,26 @@
                     signed_tx = await await window.freighterApi.signTransaction(xdr,net,pubkey);
                 }
                 if (signed_tx.length > 0){
+                    console.log(signed_tx)
+                try{
+                    document.getElementById('error').innerHTML = "Submitting to horizon..."
 
-                document.getElementById('error').innerHTML = "Submitting unstake transaction..." 
-            await server.submitTransaction(new StellarSdk.TransactionBuilder.fromXDR(signed_tx,pass))
-            document.getElementById('error').innerHTML = "Successfully unstaked " + unstaking + " NUNA!"
-            get_my_staked()
-            get_staking_transactions()
+                await server.submitTransaction(new StellarSdk.TransactionBuilder.fromXDR(signed_tx,pass))
+                document.getElementById('error').innerHTML = "Successfully staked " + amt + " NUNA"
+                get_my_staked()
+                get_staking_transactions()
             }
-            else{
-                document.getElementById('error').innerHTML = "None of your staking deposits can be unstaked." 
+                catch(e){
+                    console.log(e)
+                    document.getElementById('horizon_error').innerHTML =JSON.stringify(e.response.data.extras.result_codes,undefined,2)
+                }
             }
         }
+        else{
+            document.getElementById('horizon_error').innerHTML = "No deposits available for unstake"
         }
     }
-        
-        
+}
         get_staking_transactions()
     </script>
 </body>
